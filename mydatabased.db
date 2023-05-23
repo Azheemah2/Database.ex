@@ -1,0 +1,37 @@
+import sqlite3 as db
+
+# Connect to the database or create a new one if it doesn't exist
+conn = db.connect('store.db')
+
+# Create a cursor object to execute SQL commands
+cursor = conn.cursor()
+
+# Create a table for storing products
+cursor.execute('''CREATE TABLE IF NOT EXISTS Products (
+                    ProductID INTEGER PRIMARY KEY,
+                    Name TEXT,
+                    Description TEXT,
+                    Price REAL,
+                    Quantity INTEGER
+                )''')
+
+# Create a table for storing categories
+cursor.execute('''CREATE TABLE IF NOT EXISTS Categories (
+                    CategoryID INTEGER PRIMARY KEY,
+                    Name TEXT
+                )''')
+
+# Create a table for storing product reviews
+cursor.execute('''CREATE TABLE IF NOT EXISTS Reviews (
+                    ReviewID INTEGER PRIMARY KEY,
+                    ProductID INTEGER,
+                    Rating INTEGER,
+                    Comment TEXT,
+                    FOREIGN KEY (ProductID) REFERENCES Products(ProductID)
+                )''')
+
+# Commit the changes to the database
+conn.commit()
+
+# Close the database connection
+conn.close()
